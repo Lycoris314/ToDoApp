@@ -83,6 +83,8 @@ function time_limit_show($datetime)
 
     } else if ($datetime == "9999-12-31 23:59:59") {
         $datetime = "期限なし";
+    }else{
+        $datetime = $obj->format("Y-m-d H:i");
     }
     return $datetime;
 }
@@ -141,7 +143,7 @@ function time_limit_show($datetime)
             } ?>
             <ul>
                 <?php
-                //$rowの内容： [id, content, priority, time_limit, done]
+                //$rowの内容： [id, content, priority, time_limit, done, $no_limit]
                 foreach ($in_time as $row) {
                     $show = time_limit_show($row[3]);
 
@@ -155,7 +157,7 @@ function time_limit_show($datetime)
 
                             <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                             
-                            <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}'>編集</button>
+                            <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}' data-no_limit='{$row[5]}'>編集</button>
                             
                             <a href='delete.php?id={$row[0]}'><button type='button'>削除</button></a>
                         </p>
@@ -188,7 +190,7 @@ function time_limit_show($datetime)
 
                             <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                             
-                            <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}'>編集</button>
+                            <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}' data-no_limit='{$row[5]}'>編集</button>
                             
                             <a href='delete.php?id={$row[0]}'><button type='button'>削除</button></a>
                         </p>
@@ -226,7 +228,7 @@ function time_limit_show($datetime)
                     
                         <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                     
-                        <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}'>編集</button>
+                        <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}' data-no_limit='{$row[5]}'>編集</button>
 
                         <a href='delete.php?id={$row[0]}'><button type='button'>削除</button></a>
                     </p>

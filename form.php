@@ -75,6 +75,6 @@ $content = str_replace(PHP_EOL, "<br>", $content);
 
 //mysqlに登録
 $pdo = connect_db();
-upd_sql("insert into task values(NULL,?,?,?,0)", $content, $priority, $time_limit);
+upd_sql("insert into task values(NULL,?,?,?,0,?)", $content, $priority, $time_limit, $no_limit);
 $pdo = null;
 echo "success";

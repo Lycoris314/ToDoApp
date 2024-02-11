@@ -100,21 +100,45 @@ $(() => {
         const time = $(`span[data-id=${id}]`).attr("data-time");
         const hour = time.slice(0, 2);
         const minute = time.slice(3, 5);
+        const content = $(`p[data-id=${id}]`).text();
+        const no_limit = $(this).attr("data-no_limit");
 
 
         $(".hidden_id").attr("value", id);//編集するタスクのidを記録しておく。
 
-        const content = $(`p[data-id=${id}]`).text();
         $("textarea").val(content);
-        $("input[type='date']").val(date);
+
+        switch(no_limit){
+            case 0:
+                $("input[type='date']").val(date);
         $("input[name='hour']").val(hour);
         $("input[name='minute']").val(minute);
+        break;
+        case 1:
+            //デフォルト
+            let date=new Date();
+            let Year=date.getFullYear();
+            let month=date.getMonth()+1;
+            let date_=date.getDate();
+            let Ymd=Year+"-"+month+"-"+date_;
+            $("input[type='date']").val(Ymd);
+            $("input[name='hour']").val(12);
+            $("input[name='minute']").val(0);
+            break
+        }
+        
 
-        console.log("ここまで");
         const priority =$(this).attr("data-priority");
         console.log("priority:"+priority);
         $(`input[name=priority][value=${priority}]`).prop("checked",true);
 
+        
+        if(no_limit==1){
+            $("#no_limit").prop("checked",true);
+            $("input[type=date]").attr("disabled",true);
+            $("input[type=number]").attr("disabled",true);
+
+        }
     });
 
     //全て削除ボタン

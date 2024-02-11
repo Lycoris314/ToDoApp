@@ -122,6 +122,6 @@ $content=h($content);
 $content = str_replace(PHP_EOL, "<br>", $content);
 
 $pdo = connect_db();
-upd_sql("update task set content=?, priority=?, time_limit=? where id=?", $content, $priority, $time_limit, $id);
+upd_sql("update task set content=?, priority=?, time_limit=?, no_limit=? where id=?", $content, $priority, $time_limit, $no_limit, $id);
 $pdo = null;
 echo "success";

@@ -8,6 +8,7 @@
 body {
     color: rgb(80, 80, 80);
     font-family: "Zen Kaku Gothic New", sans-serif;
+    background-color: rgb(250, 250, 250);
 }
 
 li {
@@ -126,7 +127,7 @@ main {
     top: 60px;
     padding: 0 15px 0;
     /* background-image: linear-gradient(0deg, white, rgb(240, 240, 240)); */
-    background-color: rgb(250, 250, 250);
+    
 }
 
 footer {
@@ -302,6 +303,11 @@ input[type=checkbox]{
     justify-content: space-between;
     padding-right: 20px;
 }
+
+
+
+
+
 
 html{
     transition: 1s;
