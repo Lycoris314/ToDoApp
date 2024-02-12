@@ -1,5 +1,5 @@
 $(() => {
-    console.log("更新確認10");
+    console.log("更新確認12");
 
     //開始時にテキストエリアにフォーカス
     $("textarea").focus();
@@ -71,6 +71,8 @@ $(() => {
 
     //編集ボタンをクリック
     $("button.edit").on("click", function () {
+
+        $("textarea").focus();
 
         $(".new_post").css("display", "none");
         $(".edit_post").css("display", "block");
@@ -167,6 +169,14 @@ $(() => {
         location.assign("order.php?order=" + val);
     })
 
+    //通常モードか残存モードか
+    $(".show_mode").on("change", function () {
+        console.log("start");
+        const val = $(this).prop("value");
+        console.log("val=" + val);
+        location.assign("show_mode.php?show_mode=" + val);
+    })
+
     //時計機能
     function timer() {
         let date = new Date();
@@ -197,12 +207,27 @@ $(() => {
     //footerの出し入れ
     $(".close").on("click", () => {
         $("footer").css("bottom", "-170px");
+
+        $.ajax({
+            url: "footer.php",
+            type: "get",
+            data: "footer=close",
+            cache: false,
+        });
     })
 
     $(".open").on("click", () => {
         $("footer").css("bottom", "0");
-    })
+        $("textarea").focus();
 
+        $.ajax({
+            url: "footer.php",
+            type: "get",
+            data: "footer=open",
+            cache: false,
+        });
+    });
+    
 });
 
 

@@ -6,8 +6,6 @@ const MAX_TASK = 100;
 $order = "";
 $selected = "";
 
-console_log($_COOKIE["order"]);
-
 if (isset($_COOKIE["order"])) {
     $order = $_COOKIE["order"];
     if ($order == "priority") {
@@ -15,11 +13,19 @@ if (isset($_COOKIE["order"])) {
     }
 }
 
+$show_mode = "";
+$selected_mode = "";
+
+if (isset($_COOKIE["show_mode"])) {
+    $show_mode = $_COOKIE["show_mode"];
+    if ($show_mode == "remaining") {
+        $selected_mode = "selected";
+    }
+}
+
 $pdo = connect_db();
 
 $total_task = total_task();
-
-
 
 switch ($order) {
     case "":
@@ -62,31 +68,49 @@ $done_num = $total_task - $in_time_num - $over_num;
 
 
 //期限の時刻をリストへの表示形式に変える
-function time_limit_show($datetime)
+    $time_limit_show =function($datetime)
 {
     $obj = new DateTime($datetime);
     $obj_now = new DateTime();
     $one_day = new DateInterval("P1D");
 
     if ($obj->format("Y-m-d") == $obj_now->format("Y-m-d")) {
-        $datetime = "今日 " . $obj->format("H:i");
-
-    } else if ($obj_now->add($one_day)->format("Y-m-d") == $obj->format("Y-m-d")) {
-        $datetime = "明日 " . $obj->format("H:i");
-
-    } else if ($obj_now->add($one_day)->format("Y-m-d") == $obj->format("Y-m-d")) {
-        $datetime = "明後日 " . $obj->format("H:i");
-
-        $obj_now = new DateTime(); //リセット
-    } else if ($obj->format("Y") == $obj_now->format("Y")) {
-        $datetime = $obj->format("m-d H:i");
-
-    } else if ($datetime == "9999-12-31 23:59:59") {
-        $datetime = "期限なし";
-    }else{
-        $datetime = $obj->format("Y-m-d H:i");
+        return "今日 " . $obj->format("H:i");
     }
-    return $datetime;
+    if ($obj_now->add($one_day)->format("Y-m-d") == $obj->format("Y-m-d")) {
+        return "明日 " . $obj->format("H:i");
+    }
+    if ($obj_now->add($one_day)->format("Y-m-d") == $obj->format("Y-m-d")) {
+        return "明後日 " . $obj->format("H:i");
+    }
+        $obj_now = new DateTime(); //リセット
+
+    if ($obj->format("Y") == $obj_now->format("Y")) {
+        return $obj->format("m-d H:i");
+    } 
+    if ($datetime == "9999-12-31 23:59:59") {
+        return "期限なし";
+    } 
+    return $obj->format("Y-m-d H:i");
+};
+
+//残存モード
+$interval_show =function($datetime){
+    if ($datetime=="9999-12-31 23:59:59"){
+        return "期限なし";
+    }
+    $obj = new DateTime($datetime);
+    $obj_now = new DateTime();
+
+    $interval=$obj_now->diff($obj);
+
+    if($interval->format("%a%h")=="00"){
+        return $interval->format("あと%i分");
+    }
+    if($interval->format("%a")=="0"){
+        return $interval->format("あと%h時間 %i分");
+    }
+    return $interval->format("あと%a日と%h時間 %i分");
 }
 
 ?>
@@ -101,6 +125,14 @@ function time_limit_show($datetime)
     <script src="jquery.js"></script>
     <script src="main.js"></script>
     <link rel="stylesheet" href="main.css">
+
+    <?php
+    if(isset($_COOKIE["footer"]) && $_COOKIE["footer"]=="close"){
+    console_log($_COOKIE["footer"]);
+    echo "<script src='footer.js'></script>";
+    }
+    ?> 
+
 </head>
 
 <body>
@@ -137,15 +169,27 @@ function time_limit_show($datetime)
     <main>
         <section>
             <div id="undone_section"></div>
-            <h2>未完了</h2>
+            <div class="h2_a">
+                <h2>未完了</h2>
+                <select class="show_mode">
+                    <option value="normal">期限モード</option>
+                    <option value="remaining" <?=$selected_mode?>>残存モード</option>
+                </select>
+            </div>
             <?php if ($in_time_num == 0) {
                 echo "<p>タスクなし</p>";
             } ?>
             <ul>
                 <?php
+                $f=$time_limit_show;
+                if($show_mode=="remaining"){
+                    $f=$interval_show;
+                }
+                
                 //$rowの内容： [id, content, priority, time_limit, done, $no_limit]
                 foreach ($in_time as $row) {
-                    $show = time_limit_show($row[3]);
+                    $show = $f($row[3]);
+                    //$show = $interval_show($row[3]);
 
                     $date = substr($row[3], 0, 10);
                     $time = substr($row[3], 11, 5);
@@ -178,7 +222,7 @@ function time_limit_show($datetime)
             <ul>
                 <?php
                 foreach ($over as $row) {
-                    $show = time_limit_show($row[3]);
+                    $show = $time_limit_show($row[3]);
 
                     $date = substr($row[3], 0, 10);
                     $time = substr($row[3], 11, 5);
@@ -216,7 +260,7 @@ function time_limit_show($datetime)
                 //$row = [id, content, priority, time_limit, done]
                 while ($row = $stmt_done->fetch()) {
 
-                    $show = time_limit_show($row[3]);
+                    $show = $time_limit_show($row[3]);
 
                     $date = substr($row[3], 0, 10);
                     $time = substr($row[3], 11, 5);
@@ -240,50 +284,54 @@ function time_limit_show($datetime)
             </ul>
 
         </section>
-        <div class="open"></div>
+        <div class="open">
+            <div class="open_icon"></div>
+        </div>
     </main>
 
 
     <footer>
-        <div class=close></div>
+        <div class="close">
+            <div class="close_icon"></div>
+        </div>
         <form id="footer_form">
             <div class="footer1">
                 <div>
                     <label for="content">タスク内容</label>
-                    <textarea name="content" id="content" maxlength="499"></textarea>
+                    <textarea name="content" id="content" maxlength="499" tabindex="1"></textarea>
                 </div>
 
                 <fieldset>
                     <legend>優先度</legend>
                     <ul>
                         <li>
-                            <input type="radio" name="priority" value="2" id="high">
+                            <input type="radio" name="priority" value="2" tabindex="6" id="high">
                             <label for="high">高</label>
                         </li>
                         <li>
-                            <input type="radio" name="priority" value="1" id="middle" checked>
+                            <input type="radio" name="priority" value="1" id="middle" checked tabindex="6">
                             <label for="middle">中</label>
                         </li>
                         <li>
-                            <input type="radio" name="priority" value="0" id="low">
+                            <input type="radio" name="priority" value="0" id="low" tabindex="6">
                             <label for="low">低</label>
                         </li>
                     </ul>
                 </fieldset>
             </div>
             <div class="footer2">
-                <button class="new_post" data-total_task="<?= $total_task ?>">新規投稿</button>
+                <button class="new_post" data-total_task="<?= $total_task ?>" tabindex="7">新規投稿</button>
                 <div class="edit_post_buttons">
-                    <button class="edit_post">編集投稿</button>
-                    <button class="back" type="button">やめる</button>
+                    <button class="edit_post" tabindex="7">編集投稿</button>
+                    <button class="back" type="button" tabindex="8">やめる</button>
                 </div>
                 <div>
                     <span>期限</span>
                     <?php $today = date("Y-m-d"); ?>
-                    <input type="date" name="date" value=<?= $today ?> required>
-                    <input type="number" name="hour" value="12" min="0" max="23">時
-                    <input type="number" name="minute" value="0" min="0" max="59" step="5">分
-                    <input type="checkbox" id="no_limit" name="no_limit">
+                    <input type="date" name="date" value=<?= $today ?> tabindex="2" required>
+                    <input type="number" name="hour" value="12" min="0" max="23" tabindex="3">時
+                    <input type="number" name="minute" value="0" min="0" max="59" step="5" tabindex="4">分
+                    <input type="checkbox" id="no_limit" name="no_limit" tabindex="5">
                     <label for="no_limit">期限なし</label>
                 </div>
 
