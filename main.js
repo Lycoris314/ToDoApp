@@ -1,5 +1,5 @@
 $(() => {
-    console.log("更新確認8");
+    console.log("更新確認10");
 
     //開始時にテキストエリアにフォーカス
     $("textarea").focus();
@@ -28,17 +28,15 @@ $(() => {
 
                     }).done((data) => {
                         console.log("data=" + data);
-                        // switch (data) {
-                        //     case "over task":
-                        //         alert("タスクの登録上限{100}件に達しています");
-                        //         break;
-                        //     case "success":
-                        //         location.assign("main.php");
-                        //         break;
-                        // }
+
                         if (data == "success") {
                             location.assign("main.php");
+                        }else{
+                            alert("投稿に失敗しました。");
                         }
+                    }).fail((data)=>{
+                        console.log("data=" + data);
+                        alert("投稿に失敗しました。");
                     });
                 }
 
@@ -77,24 +75,11 @@ $(() => {
         $(".new_post").css("display", "none");
         $(".edit_post").css("display", "block");
         $(".back").css("display", "block");
-        $(".edit_post_buttons").css("display","flex");
+        $(".edit_post_buttons").css("display", "flex");
 
-        $("footer").css("bottom","0");
-
-        // $("html").animate(
-        //     { scrollTop: $("html").outerHeight() }, 800
-        // );
+        $("footer").css("bottom", "0");
 
         const id = $(this).attr("data-id");
-
-        // const datetime = $(`span[data-id=${id}]`).attr("data-date") + " "
-        //     + $(`span[data-id=${id}]`).attr("data-time");
-
-        // console.log(datetime);
-
-        // date = datetime.slice(0, 10);
-        // hour = datetime.slice(11, 13);
-        // minute = datetime.slice(14, 16);
 
         const date = $(`span[data-id=${id}]`).attr("data-date");
         const time = $(`span[data-id=${id}]`).attr("data-time");
@@ -108,35 +93,35 @@ $(() => {
 
         $("textarea").val(content);
 
-        switch(no_limit){
+        switch (no_limit) {
             case 0:
                 $("input[type='date']").val(date);
-        $("input[name='hour']").val(hour);
-        $("input[name='minute']").val(minute);
-        break;
-        case 1:
-            //デフォルト
-            let date=new Date();
-            let Year=date.getFullYear();
-            let month=date.getMonth()+1;
-            let date_=date.getDate();
-            let Ymd=Year+"-"+month+"-"+date_;
-            $("input[type='date']").val(Ymd);
-            $("input[name='hour']").val(12);
-            $("input[name='minute']").val(0);
-            break
+                $("input[name='hour']").val(hour);
+                $("input[name='minute']").val(minute);
+                break;
+            case 1:
+                //デフォルト
+                let date = new Date();
+                let Year = date.getFullYear();
+                let month = date.getMonth() + 1;
+                let date_ = date.getDate();
+                let Ymd = Year + "-" + month + "-" + date_;
+                $("input[type='date']").val(Ymd);
+                $("input[name='hour']").val(12);
+                $("input[name='minute']").val(0);
+                break
         }
-        
 
-        const priority =$(this).attr("data-priority");
-        console.log("priority:"+priority);
-        $(`input[name=priority][value=${priority}]`).prop("checked",true);
 
-        
-        if(no_limit==1){
-            $("#no_limit").prop("checked",true);
-            $("input[type=date]").attr("disabled",true);
-            $("input[type=number]").attr("disabled",true);
+        const priority = $(this).attr("data-priority");
+        console.log("priority:" + priority);
+        $(`input[name=priority][value=${priority}]`).prop("checked", true);
+
+
+        if (no_limit == 1) {
+            $("#no_limit").prop("checked", true);
+            $("input[type=date]").attr("disabled", true);
+            $("input[type=number]").attr("disabled", true);
 
         }
     });
@@ -160,7 +145,7 @@ $(() => {
     })
 
     $("#no_limit").on("click", function () {
-        console.log($(this).prop("checked"));
+
         if ($(this).prop("checked") == true) {
 
             $("input[type=number]").prop("disabled", "true");
@@ -182,29 +167,40 @@ $(() => {
         location.assign("order.php?order=" + val);
     })
 
-    function timer(){
-                let date=new Date();
-        let Year=date.getFullYear();
-        let month=date.getMonth()+1;
-        let date_=date.getDate();
-        let Ymd=Year+"-"+month+"-"+date_;
+    //時計機能
+    function timer() {
+        let date = new Date();
+        let Year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let date_ = date.getDate();
+        let Ymd = Year + "-" + month + "-" + date_;
         $(".Ymd").text(Ymd);
-        let hour=date.getHours();
-        let minute=date.getMinutes();
-        let Hi=hour+":"+minute;
+        
+        let hour = date.getHours();
+        hour=append_0(hour);
+
+        let minute = date.getMinutes();
+        minute=append_0(minute);
+
+        let Hi = hour + ":" + minute;
         $(".Hi").text(Hi);
     }
-
     timer();
-    setInterval(timer,1000);
+    setInterval(timer, 1000);
 
-    $(".close").on("click",()=>{
-        $("footer").css("bottom","-170px");
-        //$(".open").css("position","fixed");
+    function append_0(str){
+        str ="0"+str;
+        str=str.slice(-2);
+        return str;
+    }
+
+    //footerの出し入れ
+    $(".close").on("click", () => {
+        $("footer").css("bottom", "-170px");
     })
 
-    $(".open").on("click",()=>{
-        $("footer").css("bottom","0");
+    $(".open").on("click", () => {
+        $("footer").css("bottom", "0");
     })
 
 });

@@ -20,6 +20,7 @@ main li {
     margin: 5px;
     padding: 5px;
     border-radius: 5px;
+    overflow-wrap: break-word;
 }
 
 li[data-priority="0"] {
@@ -151,7 +152,7 @@ footer {
     width:25px;
     border-radius: 50%;
     background-color: rgb(160, 165, 244);
-    box-shadow: 0 0 3px 1px rgb(160, 165, 244);
+    box-shadow: 0 0 2px 1px rgb(160, 165, 244);
     cursor: pointer;
 }
 
@@ -197,12 +198,13 @@ textarea {
     caret-color: rgb(140, 0, 255);
     margin-top:4px; 
     font-family: "Zen Kaku Gothic New", sans-serif;
-    font-size: 1.03rem;
+    font-size: 1.01rem;
+    
 }
 
-textarea:focus{
+/* textarea:focus{
     border:unset;
-}
+} */
 
 .footer1 fieldset {
     width: 100px;
@@ -306,9 +308,3 @@ input[type=checkbox]{
 
 
 
-
-
-
-html{
-    transition: 1s;
-}

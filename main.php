@@ -250,7 +250,7 @@ function time_limit_show($datetime)
             <div class="footer1">
                 <div>
                     <label for="content">タスク内容</label>
-                    <textarea name="content" id="content"></textarea>
+                    <textarea name="content" id="content" maxlength="499"></textarea>
                 </div>
 
                 <fieldset>

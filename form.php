@@ -1,6 +1,6 @@
 <?php
 require_once("helper_functions.php");
-const MAX_STRLEN = 200;
+const MAX_STRLEN = 500;
 
 //「期限なし」なら１にする。
 $no_limit = 0;
@@ -70,6 +70,19 @@ $time_limit = match ($no_limit) {
 
 //エスケープ処理
 $content=h($content);
+
+//ハイパーリンク機能
+$content =
+preg_replace_callback(
+    "|https?://[\w!?/+\-~:=;.,*&@#$%()'[\]]+|", 
+    //これでいいのか？コロンやイコールも加えたけど大丈夫？逆に、なんで入っていなかったのか？
+    function ($m) {
+        $decoded=urldecode($m[0]);
+        return "<a href={$m[0]}>{$decoded}</a>";
+    },
+    $content
+);
+
 //改行処理
 $content = str_replace(PHP_EOL, "<br>", $content);
 
