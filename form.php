@@ -75,7 +75,7 @@ $content = h($content);
 $content =
     preg_replace_callback(
         "|https?://[\w!?/+\-~:=;.,*&@#$%()'[\]]+|",
-        //これでいいのか、コロンやイコールも加えたけど大丈夫か、逆に、なんで入っていなかったのか
+        //コロンやイコールも加えたけど大丈夫か、逆に、なんで入っていなかったのか
         function ($m) {
             $decoded = urldecode($m[0]);
             return "<a href={$m[0]}>{$decoded}</a>";

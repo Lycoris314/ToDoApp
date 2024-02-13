@@ -134,12 +134,6 @@ $interval_show = function ($datetime) {
 
         echo "<script src='footer.js'></script>";
     }
-    // $scroll_position=0;
-    // if(isset($_GET["scroll_position"])){
-
-    //     $scroll_position=$_GET["scroll_position"];
-    //     echo "<script src='scroll_position.js'></script>";
-    // }
     ?>    
     
     <script src="main.js"></script>
@@ -192,7 +186,7 @@ $interval_show = function ($datetime) {
             <?php if ($in_time_num == 0) {
                 echo "<p>タスクなし</p>";
             } ?>
-            <ul>
+            <ul class="in_time">
                 <?php
                 $f = $time_limit_show;
                 if ($show_mode == "remaining") {
@@ -209,7 +203,7 @@ $interval_show = function ($datetime) {
                     echo "
                     <li data-priority='{$row[2]}' data-id='{$row[0]}' data-type='in_time'>
                         <p>
-                            <input type='checkbox' class='checkbox' data-id='{$row[0]}'>
+                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' data-done='0' data-time_limit='{$row[3]}'>
 
                             <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                             
@@ -231,7 +225,7 @@ $interval_show = function ($datetime) {
             <?php if ($over_num == 0) {
                 echo "<p>タスクなし</p>";
             } ?>
-            <ul>
+            <ul class="over">
                 <?php
                 foreach ($over as $row) {
                     $show = $time_limit_show($row[3]);
@@ -242,7 +236,7 @@ $interval_show = function ($datetime) {
                     echo "
                     <li data-priority='{$row[2]}' data-id='{$row[0]}' data-type='over'>
                         <p>
-                            <input type='checkbox' class='checkbox' data-id='{$row[0]}'>
+                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' data-done='0' data-time_limit='{$row[3]}'>
 
                             <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                             
@@ -267,7 +261,7 @@ $interval_show = function ($datetime) {
             <?php if ($done_num == 0) {
                 echo "<p>タスクなし</p>";
             } ?>
-            <ul>
+            <ul class="done">
                 <?php
                 //$row = [id, content, priority, time_limit, done]
                 while ($row = $stmt_done->fetch()) {
@@ -280,7 +274,7 @@ $interval_show = function ($datetime) {
                     echo "
                     <li data-priority='{$row[2]}'data-id='{$row[0]}' data-type='done'>
                         <p>
-                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' checked>
+                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' data-done='1' data-time_limit='{$row[3]}' checked>
                         
                             <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                         

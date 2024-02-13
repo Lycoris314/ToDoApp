@@ -33,7 +33,7 @@ $(() => {
                         });
                 }
 
-            //編集投稿
+                //編集投稿
             } else if ($(".edit_post").css("display") == "block") {
 
                 my_ajax("edit.php", "post", parameter)
@@ -55,10 +55,40 @@ $(() => {
     //チェックボックス
     $(".checkbox").on("click", function () {
         let id = $(this).attr('data-id');
-        let scroll_position =$("html").scrollTop();
 
-        //location.assign(`checkbox.php?id=${id}&scroll_position=${scroll_position}`);
-        location.assign(`checkbox.php?id=${id}`);
+        //location.assign(`checkbox.php?id=${id}`);
+
+        my_ajax("checkbox.php", "get", "id=" + id)
+
+            .done((data) => {
+                if (data == "success") {
+                    move_li($(this));
+                } else {
+                    alert("更新に失敗しました。");
+                }
+            }).fail(() => {
+                alert("更新に失敗しました。");
+            })
+
+        function move_li(obj) {
+
+            let done = obj.attr("data-done");
+
+            obj.attr("data-done", 1 - Number(done));
+
+            let li = $(`li[data-id=${id}]`);
+
+            if (done == "0") {
+                $("ul.done").prepend(li);
+            } else {
+                //現在時刻と比較して移動先を決める
+                if (Date.now() <= Date.parse(obj.attr("data-time_limit"))) {
+                    $("ul.in_time").prepend(li);
+                } else {
+                    $("ul.over").prepend(li);
+                }
+            }
+        }
 
     });
 
@@ -134,15 +164,15 @@ $(() => {
             my_ajax("delete.php", "get", "id=" + id)
                 .done((data) => {
                     if (data = "success") {
-                        const li=$(`li[data-id=${id}]`);
+                        const li = $(`li[data-id=${id}]`);
                         li.remove();
 
                         //ヘッダのタスク数の変更
-                        let total_task = Number($(".total_task").text())-1;
+                        let total_task = Number($(".total_task").text()) - 1;
                         $(".total_task").text(total_task);
 
                         let obj;
-                        switch(li.attr("data-type")){
+                        switch (li.attr("data-type")) {
                             case "in_time":
                                 obj = $(".in_time_num");
                                 break;
@@ -153,7 +183,7 @@ $(() => {
                                 obj = $(".done_num");
                                 break;
                         }
-                        let n = Number(obj.text())-1;
+                        let n = Number(obj.text()) - 1;
                         obj.text(n);
 
                     } else {
