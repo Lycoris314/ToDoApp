@@ -1,9 +1,9 @@
 <?php
 
-if(isset($_GET["footer"])){
-    $footer= $_GET["footer"];
+if (isset($_GET["footer"])) {
+    $footer = $_GET["footer"];
 
-    setcookie("footer",$footer); 
+    setcookie("footer", $footer);
 
 }
 

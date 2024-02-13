@@ -1,13 +1,6 @@
 <?php
 
-//リダイレクト用にもう一つ必要かも
-function console_log($data)
-{
-    echo '<script>';
-    echo 'console.log(' . json_encode($data) . ')';
-    echo '</script>';
-}
-
+//mysqlに接続
 function connect_db()
 {
     require_once("DBInfo.php");
@@ -30,24 +23,17 @@ function non_empty(...$super_global)
     return $result;
 }
 
-function bindValues(PDOStatement $stmt, ...$values)
-{
-    foreach ($values as $key => $value) {
-        $stmt->bindValue($key + 1, $value);
-    }
-}
 
 function h($str)
 {
     return htmlspecialchars($str, ENT_QUOTES | ENT_HTML5, "UTF-8");
 }
 
-
-function total_task()
+function bindValues(PDOStatement $stmt, ...$values)
 {
-    global $pdo;
-    $stmt = $pdo->query("select count(id) from task");
-    return $stmt->fetchColumn();
+    foreach ($values as $key => $value) {
+        $stmt->bindValue($key + 1, $value);
+    }
 }
 
 //更新系クエリを実行する関数
@@ -66,11 +52,12 @@ function upd_sql(string $sql, ...$values)
         }
         $pdo = null;
         header("location:error.php?msg={$e->getMessage()}");
+        exit();
     }
 }
 
 //参照系クエリを実行する関数
-function ref_sql(string $sql, ...$values):PDOStatement
+function ref_sql(string $sql, ...$values): PDOStatement
 {
     global $pdo;
     try {
@@ -80,6 +67,16 @@ function ref_sql(string $sql, ...$values):PDOStatement
     } catch (Exception $e) {
         $pdo = null;
         header("location:error.php?msg={$e->getMessage()}");
+        exit();
     }
     return $stmt;
+}
+
+
+//PHP用コンソール
+function console_log($data)
+{
+    echo '<script>';
+    echo 'console.log(' . json_encode($data) . ')';
+    echo '</script>';
 }

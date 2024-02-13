@@ -23,19 +23,23 @@ if (isset($_COOKIE["show_mode"])) {
     }
 }
 
+
+
 $pdo = connect_db();
 
-$total_task = total_task();
+//総タスク数
+$stmt=ref_sql("select count(id) from task");
+$total_task = $stmt->fetchColumn();
 
 switch ($order) {
     case "":
     case "limit":
-        $stmt_undone = $pdo->query("select * from task where done=0 order by time_limit ");
-        $stmt_done = $pdo->query("select * from task where done=1 order by time_limit ");
+        $stmt_undone = ref_sql("select * from task where done=0 order by time_limit ");
+        $stmt_done = ref_sql("select * from task where done=1 order by time_limit ");
         break;
     case "priority":
-        $stmt_undone = $pdo->query("select * from task where done=0 order by priority desc, time_limit ");
-        $stmt_done = $pdo->query("select * from task where done=1 order by priority desc, time_limit ");
+        $stmt_undone = ref_sql("select * from task where done=0 order by priority desc, time_limit ");
+        $stmt_done = ref_sql("select * from task where done=1 order by priority desc, time_limit ");
         $selected = "selected";
         break;
 }
@@ -68,8 +72,7 @@ $done_num = $total_task - $in_time_num - $over_num;
 
 
 //期限の時刻をリストへの表示形式に変える
-    $time_limit_show =function($datetime)
-{
+$time_limit_show = function ($datetime) {
     $obj = new DateTime($datetime);
     $obj_now = new DateTime();
     $one_day = new DateInterval("P1D");
@@ -83,55 +86,64 @@ $done_num = $total_task - $in_time_num - $over_num;
     if ($obj_now->add($one_day)->format("Y-m-d") == $obj->format("Y-m-d")) {
         return "明後日 " . $obj->format("H:i");
     }
-        $obj_now = new DateTime(); //リセット
+    $obj_now = new DateTime(); //リセット
 
     if ($obj->format("Y") == $obj_now->format("Y")) {
         return $obj->format("m-d H:i");
-    } 
+    }
     if ($datetime == "9999-12-31 23:59:59") {
         return "期限なし";
-    } 
+    }
     return $obj->format("Y-m-d H:i");
 };
 
 //残存モード
-$interval_show =function($datetime){
-    if ($datetime=="9999-12-31 23:59:59"){
+$interval_show = function ($datetime) {
+    if ($datetime == "9999-12-31 23:59:59") {
         return "期限なし";
     }
     $obj = new DateTime($datetime);
     $obj_now = new DateTime();
 
-    $interval=$obj_now->diff($obj);
+    $interval = $obj_now->diff($obj);
 
-    if($interval->format("%a%h")=="00"){
+    if ($interval->format("%a%h") == "00") {
         return $interval->format("あと%i分");
     }
-    if($interval->format("%a")=="0"){
+    if ($interval->format("%a") == "0") {
         return $interval->format("あと%h時間 %i分");
     }
     return $interval->format("あと%a日と%h時間 %i分");
 }
 
-?>
+    ?>
+
 
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja" data-scroll_position=<?php $scroll_position ?>>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do App</title>
     <script src="jquery.js"></script>
-    <script src="main.js"></script>
-    <link rel="stylesheet" href="main.css">
+
 
     <?php
-    if(isset($_COOKIE["footer"]) && $_COOKIE["footer"]=="close"){
-    console_log($_COOKIE["footer"]);
-    echo "<script src='footer.js'></script>";
+    if (isset($_COOKIE["footer"]) && $_COOKIE["footer"] == "close") {
+
+        echo "<script src='footer.js'></script>";
     }
-    ?> 
+    // $scroll_position=0;
+    // if(isset($_GET["scroll_position"])){
+
+    //     $scroll_position=$_GET["scroll_position"];
+    //     echo "<script src='scroll_position.js'></script>";
+    // }
+    ?>    
+    
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="main.css">
 
 </head>
 
@@ -144,21 +156,22 @@ $interval_show =function($datetime){
         </div>
         <div>
             <p>タスク合計(
-                <?= $total_task ?>/
+                <span class="total_task"><?= $total_task ?></span>/
                 <?= MAX_TASK ?>)
             </p>
             <ul>
                 <li><a href="#undone_section">未完了(
-                        <?= $in_time_num ?> )
-                    </a>
+                        <span class="in_time_num"><?= $in_time_num ?></span> 
+                    )</a>
                 </li>
                 <li><a href="#over_section">期限超過(
-                        <?= $over_num ?> )
-                    </a>
+                        <span class="over_num"><?= $over_num ?></span> 
+                    )</a>
                 </li>
-                <li><a href="#done_section">完了(<span class='done_num'>
-                            <?= $done_num ?>
-                        </span>)</a></li>
+                <li><a href="#done_section">完了(
+                    <span class='done_num'><?= $done_num ?></span>
+                    )</a>
+                </li>
             </ul>
         </div>
         <select class="order">
@@ -173,7 +186,7 @@ $interval_show =function($datetime){
                 <h2>未完了</h2>
                 <select class="show_mode">
                     <option value="normal">期限モード</option>
-                    <option value="remaining" <?=$selected_mode?>>残存モード</option>
+                    <option value="remaining" <?= $selected_mode ?>>残存モード</option>
                 </select>
             </div>
             <?php if ($in_time_num == 0) {
@@ -181,21 +194,20 @@ $interval_show =function($datetime){
             } ?>
             <ul>
                 <?php
-                $f=$time_limit_show;
-                if($show_mode=="remaining"){
-                    $f=$interval_show;
+                $f = $time_limit_show;
+                if ($show_mode == "remaining") {
+                    $f = $interval_show;
                 }
-                
+
                 //$rowの内容： [id, content, priority, time_limit, done, $no_limit]
                 foreach ($in_time as $row) {
                     $show = $f($row[3]);
-                    //$show = $interval_show($row[3]);
-
+                
                     $date = substr($row[3], 0, 10);
                     $time = substr($row[3], 11, 5);
 
                     echo "
-                    <li data-priority='{$row[2]}' >
+                    <li data-priority='{$row[2]}' data-id='{$row[0]}' data-type='in_time'>
                         <p>
                             <input type='checkbox' class='checkbox' data-id='{$row[0]}'>
 
@@ -203,7 +215,7 @@ $interval_show =function($datetime){
                             
                             <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}' data-no_limit='{$row[5]}'>編集</button>
                             
-                            <a href='delete.php?id={$row[0]}'><button type='button'>削除</button></a>
+                            <button type='button' class='delete' data-id='{$row[0]}'>削除</button>
                         </p>
                         <p data-id='{$row[0]}' class='content'>{$row[1]}</p>
                     </li>
@@ -228,7 +240,7 @@ $interval_show =function($datetime){
                     $time = substr($row[3], 11, 5);
 
                     echo "
-                    <li data-priority='{$row[2]}' >
+                    <li data-priority='{$row[2]}' data-id='{$row[0]}' data-type='over'>
                         <p>
                             <input type='checkbox' class='checkbox' data-id='{$row[0]}'>
 
@@ -236,7 +248,7 @@ $interval_show =function($datetime){
                             
                             <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}' data-no_limit='{$row[5]}'>編集</button>
                             
-                            <a href='delete.php?id={$row[0]}'><button type='button'>削除</button></a>
+                            <button type='button' class='delete' data-id='{$row[0]}'>削除</button>
                         </p>
                         <p data-id='{$row[0]}' class='content'>{$row[1]}</p>
                     </li>
@@ -266,17 +278,17 @@ $interval_show =function($datetime){
                     $time = substr($row[3], 11, 5);
 
                     echo "
-                    <li data-priority='{$row[2]}'>
-                    <p>
-                        <input type='checkbox' class='checkbox' data-id='{$row[0]}' checked>
-                    
-                        <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
-                    
-                        <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}' data-no_limit='{$row[5]}'>編集</button>
+                    <li data-priority='{$row[2]}'data-id='{$row[0]}' data-type='done'>
+                        <p>
+                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' checked>
+                        
+                            <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
+                        
+                            <button type='button' class='edit' data-id='{$row[0]}' data-priority='{$row[2]}' data-no_limit='{$row[5]}'>編集</button>
 
-                        <a href='delete.php?id={$row[0]}'><button type='button'>削除</button></a>
-                    </p>
-                    <p data-id='{$row[0]}' class='content'>{$row[1]}</p>
+                            <button type='button' class='delete' data-id='{$row[0]}'>削除</button>
+                        </p>
+                        <p data-id='{$row[0]}' class='content'>{$row[1]}</p>
                     </li>
                     ";
                 }
