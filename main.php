@@ -2,7 +2,7 @@
 require_once("helper_functions.php");
 const MAX_TASK = 100;
 
-
+//保存しておいた並べる順序
 $order = "";
 $selected = "";
 
@@ -13,6 +13,7 @@ if (isset($_COOKIE["order"])) {
     }
 }
 
+//保存しておいた表示モード
 $show_mode = "";
 $selected_mode = "";
 
@@ -30,6 +31,7 @@ $pdo = connect_db();
 //総タスク数
 $stmt=ref_sql("select count(id) from task");
 $total_task = $stmt->fetchColumn();
+
 
 switch ($order) {
     case "":
@@ -97,7 +99,7 @@ $time_limit_show = function ($datetime) {
     return $obj->format("Y-m-d H:i");
 };
 
-//残存モード
+//残存モードでの表示
 $interval_show = function ($datetime) {
     if ($datetime == "9999-12-31 23:59:59") {
         return "期限なし";
@@ -128,7 +130,7 @@ $interval_show = function ($datetime) {
     <title>To Do App</title>
     <script src="jquery.js"></script>
 
-
+    <!-- 保存しておいたフッターの表示／非表示 -->
     <?php
     if (isset($_COOKIE["footer"]) && $_COOKIE["footer"] == "close") {
 
@@ -173,6 +175,8 @@ $interval_show = function ($datetime) {
             <option value="priority" <?= $selected ?>>優先度順</option>
         </select>
     </header>
+
+
     <main>
         <section>
             <div id="undone_section"></div>
@@ -186,6 +190,7 @@ $interval_show = function ($datetime) {
             <?php if ($in_time_num == 0) {
                 echo "<p>タスクなし</p>";
             } ?>
+
             <ul class="in_time">
                 <?php
                 $f = $time_limit_show;
@@ -218,13 +223,16 @@ $interval_show = function ($datetime) {
                 ?>
             </ul>
         </section>
+
         <hr>
+
         <section>
             <div id="over_section"></div>
             <h2>期限超過</h2>
             <?php if ($over_num == 0) {
                 echo "<p>タスクなし</p>";
             } ?>
+
             <ul class="over">
                 <?php
                 foreach ($over as $row) {
@@ -251,7 +259,9 @@ $interval_show = function ($datetime) {
                 ?>
             </ul>
         </section>
+
         <hr>
+
         <section>
             <div id="done_section"></div>
             <div class="h2_a">
@@ -261,6 +271,7 @@ $interval_show = function ($datetime) {
             <?php if ($done_num == 0) {
                 echo "<p>タスクなし</p>";
             } ?>
+
             <ul class="done">
                 <?php
                 //$row = [id, content, priority, time_limit, done]
@@ -300,6 +311,7 @@ $interval_show = function ($datetime) {
         <div class="close">
             <div class="close_icon"></div>
         </div>
+
         <form id="footer_form">
             <div class="footer1">
                 <div>
@@ -325,8 +337,10 @@ $interval_show = function ($datetime) {
                     </ul>
                 </fieldset>
             </div>
+
             <div class="footer2">
                 <button class="new_post" data-total_task="<?= $total_task ?>" tabindex="7">新規投稿</button>
+                
                 <div class="edit_post_buttons">
                     <button class="edit_post" tabindex="7">編集投稿</button>
                     <button class="back" type="button" tabindex="8">やめる</button>
@@ -337,11 +351,13 @@ $interval_show = function ($datetime) {
                     <input type="date" name="date" value=<?= $today ?> tabindex="2" required>
                     <input type="number" name="hour" value="12" min="0" max="23" tabindex="3">時
                     <input type="number" name="minute" value="0" min="0" max="59" step="5" tabindex="4">分
+
                     <input type="checkbox" id="no_limit" name="no_limit" tabindex="5">
                     <label for="no_limit">期限なし</label>
                 </div>
 
             </div>
+
             <input type="hidden" name="id" class="hidden_id" value="">
 
         </form>

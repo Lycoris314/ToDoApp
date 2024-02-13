@@ -46,6 +46,7 @@ function upd_sql(string $sql, ...$values)
         $pdo->beginTransaction();
         $stmt->execute();
         $pdo->commit();
+
     } catch (Exception $e) {
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
@@ -64,6 +65,7 @@ function ref_sql(string $sql, ...$values): PDOStatement
         $stmt = $pdo->prepare($sql);
         bindValues($stmt, ...$values);
         $stmt->execute();
+
     } catch (Exception $e) {
         $pdo = null;
         header("location:error.php?msg={$e->getMessage()}");

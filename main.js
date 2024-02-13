@@ -56,8 +56,6 @@ $(() => {
     $(".checkbox").on("click", function () {
         let id = $(this).attr('data-id');
 
-        //location.assign(`checkbox.php?id=${id}`);
-
         my_ajax("checkbox.php", "get", "id=" + id)
 
             .done((data) => {
@@ -216,11 +214,13 @@ $(() => {
         $("textarea").val("");
         $("input[name=hour]").val(12);
         $("input[name=minute]").val(0);
+
         let date = new Date();
         let Year = date.getFullYear();
         let month = date.getMonth() + 1;
         let date_ = date.getDate();
         let Ymd = Year + "-" + append_0(month) + "-" + append_0(date_);
+
         $("input[type='date']").val(Ymd);
         $("#no_limit").prop("checked", "");
         $("input[type=date]").attr("disabled", false);
@@ -293,7 +293,7 @@ $(() => {
         $("footer").css("bottom", "-170px");
 
         my_ajax("footer.php", "get", "footer=close")
-    })
+    });
 
     $(".open").on("click", () => {
         $("footer").css("bottom", "0");
