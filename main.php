@@ -29,7 +29,7 @@ if (isset($_COOKIE["show_mode"])) {
 $pdo = connect_db();
 
 //総タスク数
-$stmt=ref_sql("select count(id) from task");
+$stmt = ref_sql("select count(id) from task");
 $total_task = $stmt->fetchColumn();
 
 
@@ -136,8 +136,8 @@ $interval_show = function ($datetime) {
 
         echo "<script src='footer.js'></script>";
     }
-    ?>    
-    
+    ?>
+
     <script src="main.js"></script>
     <link rel="stylesheet" href="main.css">
 
@@ -152,21 +152,29 @@ $interval_show = function ($datetime) {
         </div>
         <div>
             <p>タスク合計(
-                <span class="total_task"><?= $total_task ?></span>/
+                <span class="total_task">
+                    <?= $total_task ?>
+                </span>/
                 <?= MAX_TASK ?>)
             </p>
             <ul>
                 <li><a href="#undone_section">未完了(
-                        <span class="in_time_num"><?= $in_time_num ?></span> 
-                    )</a>
+                        <span class="in_time_num">
+                            <?= $in_time_num ?>
+                        </span>
+                        )</a>
                 </li>
                 <li><a href="#over_section">期限超過(
-                        <span class="over_num"><?= $over_num ?></span> 
-                    )</a>
+                        <span class="over_num">
+                            <?= $over_num ?>
+                        </span>
+                        )</a>
                 </li>
                 <li><a href="#done_section">完了(
-                    <span class='done_num'><?= $done_num ?></span>
-                    )</a>
+                        <span class='done_num'>
+                            <?= $done_num ?>
+                        </span>
+                        )</a>
                 </li>
             </ul>
         </div>
@@ -201,14 +209,14 @@ $interval_show = function ($datetime) {
                 //$rowの内容： [id, content, priority, time_limit, done, $no_limit]
                 foreach ($in_time as $row) {
                     $show = $f($row[3]);
-                
+
                     $date = substr($row[3], 0, 10);
                     $time = substr($row[3], 11, 5);
 
                     echo "
                     <li data-priority='{$row[2]}' data-id='{$row[0]}' data-type='in_time'>
                         <p>
-                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' data-done='0' data-time_limit='{$row[3]}'>
+                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' data-done='0' data-time_limit='{$row[3]}' data-type='in_time'>
 
                             <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                             
@@ -244,7 +252,7 @@ $interval_show = function ($datetime) {
                     echo "
                     <li data-priority='{$row[2]}' data-id='{$row[0]}' data-type='over'>
                         <p>
-                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' data-done='0' data-time_limit='{$row[3]}'>
+                            <input type='checkbox' class='checkbox' data-id='{$row[0]}' data-done='0' data-time_limit='{$row[3]}' data-type='over'>
 
                             <span data-id='{$row[0]}' class='datetime' data-date={$date} data-time={$time}>{$show}</span>
                             
@@ -340,7 +348,7 @@ $interval_show = function ($datetime) {
 
             <div class="footer2">
                 <button class="new_post" data-total_task="<?= $total_task ?>" tabindex="7">新規投稿</button>
-                
+
                 <div class="edit_post_buttons">
                     <button class="edit_post" tabindex="7">編集投稿</button>
                     <button class="back" type="button" tabindex="8">やめる</button>

@@ -78,30 +78,32 @@ $(() => {
 
             if (done == "0") {
                 $("ul.done").prepend(li);
-                $("span.done_num").text(Number($("span.done_num").text())+1);
+                $("span.done_num").text(Number($("span.done_num").text()) + 1);
 
-                let type = obj.parents("li").attr("data-type");
-                switch(type){
+                let type = obj.attr("data-type");
+                console.log(type);
+                switch (type) {
                     case "in_time":
-                        $("span.in_time_num").text(Number($("span.in_time_num").text())-1);
+                        $("span.in_time_num").text(Number($("span.in_time_num").text()) - 1);
                         break;
                     case "over":
-                        $("span.over_num").text(Number($("span.over_num").text())-1);
+                        $("span.over_num").text(Number($("span.over_num").text()) - 1);
 
                 }
-                
+
             } else {
                 //現在時刻と比較して移動先を決める
                 if (Date.now() <= Date.parse(obj.attr("data-time_limit"))) {
                     $("ul.in_time").prepend(li);
-                    $("span.in_time_num").text(Number($("span.in_time_num").text())+1);
-                    $("span.done_num").text(Number($("span.done_num").text())-1);
+                    $("span.in_time_num").text(Number($("span.in_time_num").text()) + 1);
+                    $("span.done_num").text(Number($("span.done_num").text()) - 1);
+                    obj.attr("data-type", "in_time");
 
                 } else {
                     $("ul.over").prepend(li);
-                    $("span.over_num").text(Number($("span.over_num").text())+1);
-                    $("span.done_num").text(Number($("span.done_num").text())-1);
-
+                    $("span.over_num").text(Number($("span.over_num").text()) + 1);
+                    $("span.done_num").text(Number($("span.done_num").text()) - 1);
+                    obj.attr("data-type", "over");
                 }
             }
         }
