@@ -10,19 +10,29 @@ function connect_db()
         return $pdo;
     } catch (Exception $e) {
         header("location:error.php?msg={$e->getMessage()}");
+        exit();
     }
 }
 
-//スーパーグローバル変数がセットされているか調べる
-function non_empty(...$super_global)
-{
-    $result = true;
-    foreach ($super_global as $val) {
-        $result = $result && isset($val) && !($val === "");
-    }
-    return $result;
-}
 
+function is_set(string $method, string $name){
+    switch($method){
+        case "get":
+            if(isset($_GET[$name])){
+                return $_GET[$name]; 
+            }else{   
+                echo "パラメータがセットされていません。";
+                exit();
+            };
+        case "post":
+            if(isset($_POST[$name])){
+                return $_POST[$name]; 
+            }else{   
+                echo "パラメータがセットされていません。";
+                exit();
+            };
+    }
+}
 
 function h($str)
 {

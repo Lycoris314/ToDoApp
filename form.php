@@ -8,21 +8,8 @@ if (isset($_POST["no_limit"])) {
     $no_limit = 1;
 }
 
-
-if (
-    non_empty(
-        $_POST["content"],
-        $_POST["priority"],
-    )
-) {
-    $content = $_POST["content"];
-    $priority = $_POST["priority"];
-} else {
-    echo "パラメータが適切にセットされていません。";
-    exit();
-}
-
-//最低限のパターンチェック
+$content = is_set("post", "content");
+$priority = is_set("post", "priority");
 if (
     !(
         mb_strlen($content, "utf-8") < MAX_STRLEN &&
@@ -35,21 +22,10 @@ if (
 
 
 if ($no_limit == 0) {
-    if (
-        non_empty(
-            $_POST["date"],
-            $_POST["hour"],
-            $_POST["minute"]
-        )
-    ) {
-        $date = $_POST["date"];
-        $hour = $_POST["hour"];
-        $minute = $_POST["minute"];
-    } else {
-        echo "パラメータが適切にセットされていません。";
-        exit();
-    }
-    //最低限のパターンチェック
+
+    $date = is_set("post","date");
+    $hour = is_set("post","hour");
+    $minute = is_set("post","minute");
     if (
         !(
             preg_match('|^[0-9]{4}-[0-9]{2}-[0-9]{2}$|', $date) &&

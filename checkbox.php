@@ -1,12 +1,7 @@
 <?php
 require_once("helper_functions.php");
 
-if (non_empty($_GET["id"])) {
-    $id = $_GET["id"];
-} else {
-    header("location:error.php");
-    exit();
-}
+$id =is_set("get","id");
 
 $pdo = connect_db();
 $stmt = ref_sql("select done from task where id=?", $id);

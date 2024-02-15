@@ -81,7 +81,7 @@ $(() => {
                 $("span.done_num").text(Number($("span.done_num").text()) + 1);
 
                 let type = obj.attr("data-type");
-                console.log(type);
+
                 switch (type) {
                     case "in_time":
                         $("span.in_time_num").text(Number($("span.in_time_num").text()) - 1);

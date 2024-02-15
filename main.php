@@ -122,7 +122,7 @@ $interval_show = function ($datetime) {
 
 
 <!DOCTYPE html>
-<html lang="ja" data-scroll_position=<?php $scroll_position ?>>
+<html lang="ja">
 
 <head>
     <meta charset="UTF-8">
