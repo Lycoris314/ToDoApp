@@ -315,7 +315,7 @@ $interval_show = function ($datetime) {
     </main>
 
 
-    <footer>
+    <footer class="footer-open">
         <div class="close">
             <div class="close_icon"></div>
         </div>
@@ -347,9 +347,9 @@ $interval_show = function ($datetime) {
             </div>
 
             <div class="footer2">
-                <button class="new_post" data-total_task="<?= $total_task ?>" tabindex="7">新規投稿</button>
+                <button class="new_post new_post_show" data-total_task="<?= $total_task ?>" tabindex="7">新規投稿</button>
 
-                <div class="edit_post_buttons">
+                <div class="edit_post_buttons edit_post_buttons_hidden">
                     <button class="edit_post" tabindex="7">編集投稿</button>
                     <button class="back" type="button" tabindex="8">やめる</button>
                 </div>

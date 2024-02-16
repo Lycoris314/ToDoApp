@@ -1,0 +1,55 @@
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+--
+-- Host: localhost    Database: to_do_app
+-- ------------------------------------------------------
+-- Server version	8.0.34
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `task`
+--
+
+DROP TABLE IF EXISTS `task`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `task` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `content` varchar(1000) NOT NULL,
+  `priority` tinyint NOT NULL,
+  `time_limit` datetime DEFAULT NULL,
+  `done` tinyint NOT NULL,
+  `no_limit` tinyint DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=331 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `task`
+--
+
+LOCK TABLES `task` WRITE;
+/*!40000 ALTER TABLE `task` DISABLE KEYS */;
+INSERT INTO `task` VALUES (296,'雪風',1,'2024-10-14 12:25:00',0,0),(298,'たらこスパ',1,'2024-02-28 18:30:00',1,0),(308,'<a href=https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Date>https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Date</a>',1,'2024-02-14 12:00:00',0,0),(309,'<a href=https://ja.wikipedia.org/wiki/%E8%9C%82%E8%9C%9C>https://ja.wikipedia.org/wiki/蜂蜜</a>',1,'2024-02-14 04:00:00',1,0),(310,'ベンジャミン<br>',0,'2024-01-31 09:15:00',0,0),(311,'改造コード',2,'2024-02-04 09:00:00',1,0),(312,'ダグラス浜田',2,'2027-07-14 15:30:00',0,0),(313,'七つの森のこっちのひとつ',2,'2024-02-14 22:10:00',1,0),(314,'シマエナガクッキー',0,'2024-02-16 11:55:00',0,0),(315,'レインボー攻撃',1,'2024-01-14 13:00:00',0,0),(316,'正常な脳に麻酔銃',1,'2023-02-14 11:25:00',0,0),(317,'透明な軌道をすすむ',1,'2024-02-14 12:00:00',0,0),(318,'腐野淳吾',0,'2024-02-27 11:05:00',1,0),(319,'金平超過',0,'2104-04-04 06:00:00',0,0),(320,'簡易式解脱',2,'2022-01-05 05:15:00',0,0),(321,'ピエロのプライド',0,'2024-01-30 05:45:00',0,0),(322,'シャングリラ',2,'2022-07-15 12:00:00',0,0),(323,'カンパネルラ',1,'2024-02-14 12:00:00',0,0),(324,'どうでもよさそうなキーホルダー',1,'2024-02-05 17:10:00',0,0),(325,'ササミの底値',0,'2024-12-12 12:10:00',0,0),(326,'こっくりさんと催眠療法',1,'9999-12-31 23:59:59',1,1),(327,'死神タナトス',1,'2024-08-14 12:00:00',0,0),(328,'枕返し',0,'9999-12-31 23:59:59',1,1),(329,'ネガ街',2,'2024-02-14 11:10:00',0,0),(330,'確定申',1,'2023-03-11 13:00:00',1,0);
+/*!40000 ALTER TABLE `task` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2024-02-14  7:33:05

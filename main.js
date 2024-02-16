@@ -1,7 +1,7 @@
 $(() => {
 
-    //開始時にテキストエリアにフォーカス
     $("textarea").focus();
+
 
     $("form").on("submit", (e) => {
         e.preventDefault();
@@ -13,7 +13,7 @@ $(() => {
         } else {
 
             //新規投稿
-            if ($(".new_post").css("display") == "block") {
+            if ($(".new_post").hasClass("new_post_show")) {
 
                 if ($(".new_post").attr("data-total_task") >= 100) {
                     alert("タスクの登録上限100件に達しています。");
@@ -34,7 +34,7 @@ $(() => {
                 }
 
                 //編集投稿
-            } else if ($(".edit_post").css("display") == "block") {
+            }else if($(".edit_post_buttons").hasClass("edit_post_buttons_show")){
 
                 my_ajax("edit.php", "post", parameter)
                     .done((data) => {
@@ -116,12 +116,11 @@ $(() => {
 
         $("textarea").focus();
 
-        $(".new_post").css("display", "none");
-        $(".edit_post").css("display", "block");
-        $(".back").css("display", "block");
-        $(".edit_post_buttons").css("display", "flex");
+        $(".new_post").addClass("new_post_hidden").removeClass("new_post_show");
 
-        $("footer").css("bottom", "0");
+        $(".edit_post_buttons").addClass("edit_post_buttons_show").removeClass("edit_post_buttons_hidden");
+
+        $("footer").addClass("fotter-open").removeClass("footer-close")
 
         const id = $(this).attr("data-id");
 
@@ -165,6 +164,7 @@ $(() => {
         $("#no_limit").prop("checked", "");
         $("input[type=date]").attr("disabled", false);
         $("input[type=number]").attr("disabled", false);
+        
         if (no_limit == 1) {
             $("#no_limit").prop("checked", true);
             $("input[type=date]").attr("disabled", true);
@@ -227,10 +227,10 @@ $(() => {
 
     //やめるボタン
     $(".back").on("click", () => {
-        $(".new_post").css("display", "block");
-        $(".edit_post").css("display", "none");
-        $(".back").css("display", "none");
-        $(".edit_post_buttons").css("display", "none");
+
+        $(".new_post").toggleClass("new_post_show new_post_hidden");
+        
+        $(".edit_post_buttons").toggleClass("edit_post_buttons_show edit_post_buttons_hidden");
         $("textarea").val("");
         $("input[name=hour]").val(12);
         $("input[name=minute]").val(0);
@@ -310,16 +310,19 @@ $(() => {
 
     //footerの出し入れ
     $(".close").on("click", () => {
-        $("footer").css("bottom", "-170px");
 
-        my_ajax("footer.php", "get", "footer=close")
+        $("footer").toggleClass("footer-open footer-close");
+
+        my_ajax("footer.php", "get", "footer=close");
     });
 
     $(".open").on("click", () => {
-        $("footer").css("bottom", "0");
+
+        $("footer").toggleClass("footer-open footer-close");
+
         $("textarea").focus();
 
-        my_ajax("footer.php", "get", "footer=open")
+        my_ajax("footer.php", "get", "footer=open");
     });
 
 });
