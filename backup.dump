@@ -30,7 +30,7 @@ CREATE TABLE `task` (
   `done` tinyint NOT NULL,
   `no_limit` tinyint DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=331 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=361 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `task` (
 
 LOCK TABLES `task` WRITE;
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
-INSERT INTO `task` VALUES (296,'雪風',1,'2024-10-14 12:25:00',0,0),(298,'たらこスパ',1,'2024-02-28 18:30:00',1,0),(308,'<a href=https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Date>https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Date</a>',1,'2024-02-14 12:00:00',0,0),(309,'<a href=https://ja.wikipedia.org/wiki/%E8%9C%82%E8%9C%9C>https://ja.wikipedia.org/wiki/蜂蜜</a>',1,'2024-02-14 04:00:00',1,0),(310,'ベンジャミン<br>',0,'2024-01-31 09:15:00',0,0),(311,'改造コード',2,'2024-02-04 09:00:00',1,0),(312,'ダグラス浜田',2,'2027-07-14 15:30:00',0,0),(313,'七つの森のこっちのひとつ',2,'2024-02-14 22:10:00',1,0),(314,'シマエナガクッキー',0,'2024-02-16 11:55:00',0,0),(315,'レインボー攻撃',1,'2024-01-14 13:00:00',0,0),(316,'正常な脳に麻酔銃',1,'2023-02-14 11:25:00',0,0),(317,'透明な軌道をすすむ',1,'2024-02-14 12:00:00',0,0),(318,'腐野淳吾',0,'2024-02-27 11:05:00',1,0),(319,'金平超過',0,'2104-04-04 06:00:00',0,0),(320,'簡易式解脱',2,'2022-01-05 05:15:00',0,0),(321,'ピエロのプライド',0,'2024-01-30 05:45:00',0,0),(322,'シャングリラ',2,'2022-07-15 12:00:00',0,0),(323,'カンパネルラ',1,'2024-02-14 12:00:00',0,0),(324,'どうでもよさそうなキーホルダー',1,'2024-02-05 17:10:00',0,0),(325,'ササミの底値',0,'2024-12-12 12:10:00',0,0),(326,'こっくりさんと催眠療法',1,'9999-12-31 23:59:59',1,1),(327,'死神タナトス',1,'2024-08-14 12:00:00',0,0),(328,'枕返し',0,'9999-12-31 23:59:59',1,1),(329,'ネガ街',2,'2024-02-14 11:10:00',0,0),(330,'確定申',1,'2023-03-11 13:00:00',1,0);
+INSERT INTO `task` VALUES (358,'<a href=https://ja.wikipedia.org/wiki/%E3%83%98%E3%83%AA%E3%82%B3%E3%83%90%E3%82%AF%E3%82%BF%E3%83%BC%E3%83%BB%E3%83%94%E3%83%AD%E3%83%AA>https://ja.wikipedia.org/wiki/ヘリコバクター・ピロリ</a>',2,'9999-12-31 23:59:59',1,1),(359,'梅<br>竹<br>松',0,'2024-02-19 12:00:00',1,0),(360,'&amp;lt;br&amp;gt;',1,'2024-02-19 12:00:00',1,0);
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-02-14  7:33:05
+-- Dump completed on 2024-02-19  9:11:13

@@ -51,7 +51,7 @@ $content = h($content);
 $content =
     preg_replace_callback(
         "|https?://[\w!?/+\-~:=;.,*&@#$%()'[\]]+|",
-        //コロンやイコールも加えたけど大丈夫か、逆に、なんで入っていなかったのか
+
         function ($m) {
             $decoded = urldecode($m[0]);
             return "<a href={$m[0]}>{$decoded}</a>";
@@ -64,6 +64,6 @@ $content = str_replace(PHP_EOL, "<br>", $content);
 
 //mysqlに登録
 $pdo = connect_db();
-upd_sql("insert into task values(NULL,?,?,?,0,?)", $content, $priority, $time_limit, $no_limit);
+upd_sql($pdo, "insert into task values(NULL,?,?,?,0,?)", $content, $priority, $time_limit, $no_limit);
 $pdo = null;
 echo "success";

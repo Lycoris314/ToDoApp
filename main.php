@@ -29,19 +29,19 @@ if (isset($_COOKIE["show_mode"])) {
 $pdo = connect_db();
 
 //総タスク数
-$stmt = ref_sql("select count(id) from task");
+$stmt = ref_sql($pdo, "select count(id) from task");
 $total_task = $stmt->fetchColumn();
 
 
 switch ($order) {
     case "":
     case "limit":
-        $stmt_undone = ref_sql("select * from task where done=0 order by time_limit ");
-        $stmt_done = ref_sql("select * from task where done=1 order by time_limit ");
+        $stmt_undone = ref_sql($pdo, "select * from task where done=0 order by time_limit ");
+        $stmt_done = ref_sql($pdo, "select * from task where done=1 order by time_limit ");
         break;
     case "priority":
-        $stmt_undone = ref_sql("select * from task where done=0 order by priority desc, time_limit ");
-        $stmt_done = ref_sql("select * from task where done=1 order by priority desc, time_limit ");
+        $stmt_undone = ref_sql($pdo, "select * from task where done=0 order by priority desc, time_limit ");
+        $stmt_done = ref_sql($pdo, "select * from task where done=1 order by priority desc, time_limit ");
         $selected = "selected";
         break;
 }

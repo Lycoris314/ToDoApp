@@ -47,9 +47,8 @@ function bindValues(PDOStatement $stmt, ...$values)
 }
 
 //更新系クエリを実行する関数
-function upd_sql(string $sql, ...$values)
+function upd_sql(PDO $pdo, string $sql, ...$values)
 {
-    global $pdo;
     try {
         $stmt = $pdo->prepare($sql);
         bindValues($stmt, ...$values);
@@ -68,9 +67,8 @@ function upd_sql(string $sql, ...$values)
 }
 
 //参照系クエリを実行する関数
-function ref_sql(string $sql, ...$values): PDOStatement
+function ref_sql(PDO $pdo, string $sql, ...$values): PDOStatement
 {
-    global $pdo;
     try {
         $stmt = $pdo->prepare($sql);
         bindValues($stmt, ...$values);

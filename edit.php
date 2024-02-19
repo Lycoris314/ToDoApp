@@ -15,6 +15,7 @@ $priority = is_set("post","priority");
 $id = is_set("post","id");
 if (
     !(
+        $content !="" &&
         mb_strlen($content, "utf-8") < MAX_STRLEN &&
         preg_match('|^[012]$|', $priority) &&
         preg_match('|^[0-9]+$|', $id)
@@ -68,6 +69,6 @@ $content = str_replace(PHP_EOL, "<br>", $content);
 
 //登録
 $pdo = connect_db();
-upd_sql("update task set content=?, priority=?, time_limit=?, no_limit=? where id=?", $content, $priority, $time_limit, $no_limit, $id);
+upd_sql($pdo, "update task set content=?, priority=?, time_limit=?, no_limit=? where id=?", $content, $priority, $time_limit, $no_limit, $id);
 $pdo = null;
 echo "success";

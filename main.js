@@ -128,7 +128,13 @@ $(() => {
         const time = $(`span[data-id=${id}]`).attr("data-time");
         const hour = time.slice(0, 2);
         const minute = time.slice(3, 5);
-        const content = $(`p[data-id=${id}]`).text();
+        let content = $(`p[data-id=${id}]`).html();
+
+        //加工前に戻す
+        content=content.replaceAll("<br>","\r\n")
+        .replaceAll('<a href="',"")
+        .replaceAll(/">.*<\/a>/g,"");
+
         const no_limit = $(this).attr("data-no_limit");
 
         $(".hidden_id").attr("value", id);//編集するタスクのidを記録しておく。
